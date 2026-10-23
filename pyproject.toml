@@ -1,0 +1,33 @@
+[project]
+name = "ai-powered-cloud-security-engine"
+version = "0.1.0"
+description = "AI-powered cloud security engine: scans AWS for misconfigurations and uses AI to prioritize and explain fixes"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = ["boto3>=1.34", "rich>=13", "httpx>=0.27"]
+
+[project.optional-dependencies]
+dashboard = ["fastapi>=0.110", "uvicorn>=0.29"]
+dev = ["pytest>=8", "moto[s3,iam,ec2,rds,kms,cloudtrail,guardduty]>=5", "ruff>=0.4", "fastapi>=0.110"]
+
+[project.scripts]
+cloudsec = "cloudsec.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["cloudsec*"]
+
+[tool.ruff]
+line-length = 140
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E702"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
